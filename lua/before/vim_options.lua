@@ -7,6 +7,7 @@ vim.g.maplocalleader = ' '
 
 -- Set highlight on search
 vim.o.hlsearch = false
+vim.opt.incsearch = true
 
 -- Toggle Line numbers and relative line numbers
 vim.wo.number = true
@@ -32,7 +33,7 @@ vim.o.smartcase = true
 vim.o.signcolumn = 'yes'
 
 -- Decrease update time
-vim.o.updatetime = 250
+vim.o.updatetime = 50
 vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
@@ -43,6 +44,33 @@ vim.o.termguicolors = true
 
 -- Enusre I have some space when I am scrolling
 vim.opt.scrolloff = 8
+
+
+
+-- Indenting
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.smartindent = true
+
+-- For WSL
+if vim.fn.has('wsl') == 1 then
+
+  vim.api.nvim_create_autocmd('TextYankPost', {
+
+    group = vim.api.nvim_create_augroup('Yank', { clear = true }),
+
+    callback = function()
+
+      vim.fn.system('clip.exe', vim.fn.getreg('"'))
+
+    end,
+
+  })
+
+end
+
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
