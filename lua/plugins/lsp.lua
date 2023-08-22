@@ -6,10 +6,13 @@ local lsp_zero_init = function(_, opts)
     -- to learn the available actions
     lsp.default_keymaps({ buffer = bufnr })
 
-    vim.keymap.set("n", '<leader>rn', function() vim.lsp.buf.rename() end, opts)
-    vim.keymap.set("n", '<leader>ca', function() vim.lsp.buf.code_action() end, opts)
+    vim.keymap.set("n", '<leader>rn', function() vim.lsp.buf.rename() end, {desc="rename"})
+    vim.keymap.set("n", '<leader>ca', function() vim.lsp.buf.code_action() end, {desc="rename"})
 
-    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, {desc="signature_help"})
+    vim.keymap.set("n", "<leader>gd", function() vim.lsp.buf.definition() end, {desc="goto definition"})
+    vim.keymap.set("n", "<leader>gD", function() vim.lsp.buf.declaration() end, {desc="goto declaration"})
+    vim.keymap.set("n", "<leader>gi", function() vim.lsp.buf.implementation() end, {desc="goto implementation"})
   end)
 
   -- (Optional) Configure lua language server for neovim
