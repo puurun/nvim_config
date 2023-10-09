@@ -17,7 +17,7 @@ vim.wo.relativenumber = true
 vim.o.mouse = 'a'
 
 -- Sync clipboard between OS and Neovim
-vim.o.clipboard = 'unnamedplus'
+vim.o.clipboard = 'unnamed'
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -44,6 +44,8 @@ vim.o.termguicolors = true
 
 -- Enusre I have some space when I am scrolling
 vim.opt.scrolloff = 8
+
+vim.opt.wrap = false
 
 
 

@@ -8,13 +8,15 @@ local lsp_zero_init = function(_, opts)
     vim.keymap.set("n", '<leader>rn', vim.lsp.buf.rename, { desc = "[R]e[N]ame" })
     vim.keymap.set("n", '<leader>ca', vim.lsp.buf.code_action, { desc = "[C]ode [A]ctions" })
 
-    vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { desc = "signature_help" })
+    vim.keymap.set({ "i", "n" }, "<C-k>", vim.lsp.buf.signature_help, { desc = "signature_help" })
+    vim.keymap.set("n", "<leader>h", vim.lsp.buf.hover, { desc = "lsp hover" })
     vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, { desc = "[G]oto [D]efinition" })
     vim.keymap.set("n", "<leader>gD", vim.lsp.buf.declaration, { desc = "[G]oto [D]eclaration" })
     vim.keymap.set("n", "<leader>gi", vim.lsp.buf.implementation, { desc = "[G]oto [I]mplementation" })
     vim.keymap.set("n", "<leader>td", vim.lsp.buf.type_definition, { desc = "[T]ype [D]efinition" })
 
     vim.keymap.set("n", '<leader>fc', vim.lsp.buf.format, { desc = "[F]ormat [C]ode" })
+
 
 
 
