@@ -17,7 +17,7 @@ vim.wo.relativenumber = true
 vim.o.mouse = 'a'
 
 -- Sync clipboard between OS and Neovim
-vim.o.clipboard = 'unnamed'
+-- vim.o.clipboard = 'unnamed'
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -56,7 +56,7 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
--- For WSL
+--[[ -- For WSL
 if vim.fn.has('wsl') == 1 then
 
   vim.api.nvim_create_autocmd('TextYankPost', {
@@ -71,7 +71,8 @@ if vim.fn.has('wsl') == 1 then
 
   })
 
-end
+end ]]
+
 
 
 -- [[ Highlight on yank ]]
