@@ -1,7 +1,7 @@
-local lsp_zero_init = function(_, opts)
-  local lsp = require('lsp-zero').preset({})
+local lsp_zero_init = function(_, _)
+  local lsp_zero = require('lsp-zero')
 
-  lsp.on_attach(function(client, bufnr)
+  lsp_zero.on_attach(function(_, _)
     -- see :help lsp-zero-keybindings
     -- to learn the available actions
 
@@ -17,9 +17,6 @@ local lsp_zero_init = function(_, opts)
 
     vim.keymap.set("n", '<leader>fc', vim.lsp.buf.format, { desc = "[F]ormat [C]ode" })
 
-
-
-
     -- require('lsp_signature').on_attach({
     --   toggle_key_flip_floatwin_setting = true,
     --   timer_interval = 20,
@@ -30,12 +27,17 @@ local lsp_zero_init = function(_, opts)
   end)
 
   -- (Optional) Configure lua language server for neovim
-  require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
-
+  
   local cmp = require('cmp')
   local cmp_action = require('lsp-zero').cmp_action()
   cmp.setup({
+    snippet = {
+      expand = function(args)
+        require('luasnip').lsp_expand(args.body)
+      end,
+    },
     mapping = {
+      ['<Tab>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehaviorInsert }),
       ['<C-x>'] = cmp.mapping.complete(),
       ['<C-f>'] = cmp_action.luasnip_jump_forward(),
       ['<C-l>'] = cmp_action.luasnip_jump_backward(),
@@ -45,7 +47,37 @@ local lsp_zero_init = function(_, opts)
       { name = "nvim_lsp_signature_help" },
     }
   })
-  lsp.setup()
+
+  lsp_zero.setup()
+
+  require('mason').setup({})
+  require('mason-lspconfig').setup({
+    ensure_installed = {
+      -- Rust
+      'rust_analyzer',
+      -- Java
+      'jdtls',
+      -- Python
+      'pyright',
+      -- C/C++
+      'clangd',
+    },
+    handlers = {
+      lsp_zero.default_setup,
+      lua_ls = function()
+        local lua_opts = lsp_zero.nvim_lua_ls()
+        require('lspconfig').lua_ls.setup(lua_opts)
+      end,
+    }
+  })
+
+
+  local lsp_config = require('lspconfig')
+  lsp_config.rust_analyzer.setup {}
+  lsp_config.jdtls.setup {}
+  lsp_config.pyright.setup {}
+  lsp_config.clangd.setup {}
+  lsp_config.ocamllsp.setup {}
 
 
 
@@ -137,7 +169,7 @@ local M = {
 
   {
     'VonHeikemen/lsp-zero.nvim',
-    branch = 'v2.x',
+    branch = 'v3.x',
     dependencies = {
       -- LSP Support
       { 'neovim/nvim-lspconfig' },             -- Required
@@ -156,8 +188,9 @@ local M = {
           'rafamadriz/friendly-snippets',
         },
       },
+
       'saadparwaiz1/cmp_luasnip',
-      "hrsh7th/cmp-nvim-lsp-signature-help",
+      -- "hrsh7th/cmp-nvim-lsp-signature-help",
     },
     config = lsp_zero_init
   },
