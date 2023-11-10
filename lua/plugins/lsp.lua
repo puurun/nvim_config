@@ -16,18 +16,11 @@ local lsp_zero_init = function(_, _)
     vim.keymap.set("n", "<leader>td", vim.lsp.buf.type_definition, { desc = "[T]ype [D]efinition" })
 
     vim.keymap.set("n", '<leader>fc', vim.lsp.buf.format, { desc = "[F]ormat [C]ode" })
-
-    -- require('lsp_signature').on_attach({
-    --   toggle_key_flip_floatwin_setting = true,
-    --   timer_interval = 20,
-    --
-    -- })
-    -- vim.keymap.set({ 'i' }, '<C-k>', require('lsp_signature').toggle_float_win,
-    --   { silent = true, noremap = true, desc = 'toggle signature' })
   end)
 
-  -- (Optional) Configure lua language server for neovim
-  
+
+  require("luasnip.loaders.from_vscode").lazy_load()
+
   local cmp = require('cmp')
   local cmp_action = require('lsp-zero').cmp_action()
   cmp.setup({
@@ -39,14 +32,32 @@ local lsp_zero_init = function(_, _)
     mapping = {
       ['<Tab>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehaviorInsert }),
       ['<C-x>'] = cmp.mapping.complete(),
-      ['<C-f>'] = cmp_action.luasnip_jump_forward(),
-      ['<C-l>'] = cmp_action.luasnip_jump_backward(),
+      ['<C-p>'] = cmp.mapping(function()
+        if cmp.visible() then
+          cmp.select_prev_item({ behavior = 'select' })
+        else
+          cmp.complete()
+        end
+      end),
+      ['<C-n>'] = cmp.mapping(function()
+        if cmp.visible() then
+          cmp.select_next_item({ behavior = 'select' })
+        else
+          cmp.complete()
+        end
+      end),
+
+      -- luasnip
+      ['<C-l>'] = cmp_action.luasnip_jump_forward(),
+      ['<C-j>'] = cmp_action.luasnip_jump_backward(),
     },
     sources = {
+      { name = "luasnip" },
       { name = "nvim_lsp" },
       { name = "nvim_lsp_signature_help" },
     }
   })
+
 
   lsp_zero.setup()
 
@@ -81,7 +92,6 @@ local lsp_zero_init = function(_, _)
 
 
 
-  require("luasnip.loaders.from_vscode").lazy_load()
   require('rust-tools').setup()
 end
 
