@@ -46,10 +46,11 @@ local lsp_zero_init = function(_, _)
           cmp.complete()
         end
       end),
-
+      ['<C-k>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-j>'] = cmp.mapping.scroll_docs(4),
       -- luasnip
       ['<C-l>'] = cmp_action.luasnip_jump_forward(),
-      ['<C-j>'] = cmp_action.luasnip_jump_backward(),
+      ['<C-h>'] = cmp_action.luasnip_jump_backward(),
     },
     sources = {
       { name = "luasnip" },
