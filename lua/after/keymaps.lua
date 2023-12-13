@@ -38,4 +38,4 @@ vim.keymap.set({"n", "v"}, "<leader>p", [["+p]])
 vim.keymap.set("n", "<leader>P", [["+P]])
 
 -- Sometimes c-c can be different to ESC
-vim.keymap.set("i", "<C-c>", "<Esc>")
+vim.keymap.set("i", "<C-c>", "<Esc><cmd>update<cr>")
