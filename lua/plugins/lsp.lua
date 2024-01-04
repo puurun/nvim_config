@@ -67,12 +67,12 @@ local lsp_zero_init = function(_, _)
     ensure_installed = {
       -- Rust
       'rust_analyzer',
-      -- Java
-      'jdtls',
       -- Python
       'pyright',
       -- C/C++
       'clangd',
+      -- JS
+      'tsserver',
     },
     handlers = {
       lsp_zero.default_setup,
@@ -90,6 +90,7 @@ local lsp_zero_init = function(_, _)
   lsp_config.pyright.setup {}
   lsp_config.clangd.setup {}
   lsp_config.ocamllsp.setup {}
+  lsp_config.tsserver.setup {}
 
 
 
