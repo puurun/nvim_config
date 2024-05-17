@@ -1,5 +1,5 @@
 -- Remap for space to not interfere with leader
-vim.keymap.set({'n', 'v'}, '<Space>', '<Nop>', {silent = true})
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -47,6 +47,11 @@ vim.opt.scrolloff = 8
 
 vim.opt.wrap = false
 
+-- Char Line
+vim.opt.colorcolumn = "100"
+
+-- Korean
+vim.opt.langmap = "ㅁa,ㅠb,ㅊc,ㅇd,ㄷe,ㄹf,ㅎg,ㅗh,ㅑi,ㅓj,ㅏk,ㅣl,ㅡm,ㅜn,ㅐo,ㅔp,ㅂq,ㄱr,ㄴs,ㅅt,ㅕu,ㅍv,ㅈw,ㅌx,ㅛy,ㅋz"
 
 
 -- Indenting
@@ -56,24 +61,24 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
---[[ -- For WSL
-if vim.fn.has('wsl') == 1 then
 
-  vim.api.nvim_create_autocmd('TextYankPost', {
-
-    group = vim.api.nvim_create_augroup('Yank', { clear = true }),
-
-    callback = function()
-
-      vim.fn.system('clip.exe', vim.fn.getreg('"'))
-
-    end,
-
-  })
-
-end ]]
-
-
+-- For WSL
+if vim.fn.exists('g:vscode') == 0 then
+  if vim.fn.has('wsl') == 1 then
+    vim.g.clipboard = {
+      name = 'WslClipboard',
+      copy = {
+        ['+'] = 'clip.exe',
+        ['*'] = 'clip.exe',
+      },
+      paste = {
+        ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+      },
+      cache_enabled = 0,
+    }
+  end
+end
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -85,5 +90,3 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
-
-

@@ -8,8 +8,8 @@ local lsp_zero_init = function(_, _)
     vim.keymap.set("n", '<leader>rn', vim.lsp.buf.rename, { desc = "[R]e[N]ame" })
     vim.keymap.set("n", '<leader>ca', vim.lsp.buf.code_action, { desc = "[C]ode [A]ctions" })
 
-    vim.keymap.set({ "i", "n" }, "<C-k>", vim.lsp.buf.signature_help, { desc = "signature_help" })
-    vim.keymap.set("n", "<leader>h", vim.lsp.buf.hover, { desc = "lsp hover" })
+    vim.keymap.set("n", "<leader>K", vim.lsp.buf.signature_help, { desc = "signature_help" })
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "lsp hover" })
     vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, { desc = "[G]oto [D]efinition" })
     vim.keymap.set("n", "<leader>gD", vim.lsp.buf.declaration, { desc = "[G]oto [D]eclaration" })
     vim.keymap.set("n", "<leader>gi", vim.lsp.buf.implementation, { desc = "[G]oto [I]mplementation" })
@@ -91,6 +91,9 @@ local lsp_zero_init = function(_, _)
   lsp_config.clangd.setup {}
   lsp_config.ocamllsp.setup {}
   lsp_config.tsserver.setup {}
+  lsp_config.taplo.setup {}
+  lsp_config.jsonls.setup {}
+  lsp_config.html.setup {}
 
 
 
