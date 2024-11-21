@@ -1,10 +1,7 @@
 local lsp_zero_init = function(_, _)
   local lsp_zero = require('lsp-zero')
 
-  lsp_zero.on_attach(function(_, _)
-    -- see :help lsp-zero-keybindings
-    -- to learn the available actions
-
+  local lsp_attach = function(client, bufnr)
     vim.keymap.set("n", '<leader>rn', vim.lsp.buf.rename, { desc = "[R]e[N]ame" })
     vim.keymap.set("n", '<leader>ca', vim.lsp.buf.code_action, { desc = "[C]ode [A]ctions" })
 
@@ -16,10 +13,8 @@ local lsp_zero_init = function(_, _)
     vim.keymap.set("n", "<leader>td", vim.lsp.buf.type_definition, { desc = "[T]ype [D]efinition" })
 
     vim.keymap.set("n", '<leader>fc', vim.lsp.buf.format, { desc = "[F]ormat [C]ode" })
-  end)
+  end
 
-
-  require("luasnip.loaders.from_vscode").lazy_load()
 
   local cmp = require('cmp')
   local cmp_action = require('lsp-zero').cmp_action()
@@ -59,8 +54,15 @@ local lsp_zero_init = function(_, _)
     }
   })
 
+  require("luasnip.loaders.from_vscode").lazy_load()
 
-  lsp_zero.setup()
+
+  lsp_zero.extend_lspconfig({
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
+    lsp_attach = lsp_attach,
+    float_border = 'rounded',
+    sign_text = true,
+  })
 
   require('mason').setup({})
   require('mason-lspconfig').setup({
@@ -72,7 +74,7 @@ local lsp_zero_init = function(_, _)
       -- C/C++
       'clangd',
       -- JS
-      'tsserver',
+      'ts_ls',
     },
     handlers = {
       lsp_zero.default_setup,
@@ -90,11 +92,10 @@ local lsp_zero_init = function(_, _)
   lsp_config.pyright.setup {}
   lsp_config.clangd.setup {}
   lsp_config.ocamllsp.setup {}
-  lsp_config.tsserver.setup {}
+  lsp_config.ts_ls.setup {}
   lsp_config.taplo.setup {}
   lsp_config.jsonls.setup {}
   lsp_config.html.setup {}
-
 
 
   require('rust-tools').setup()
@@ -184,7 +185,7 @@ local M = {
 
   {
     'VonHeikemen/lsp-zero.nvim',
-    branch = 'v3.x',
+    branch = 'v4.x',
     dependencies = {
       -- LSP Support
       { 'neovim/nvim-lspconfig' },             -- Required

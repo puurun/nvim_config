@@ -64,20 +64,32 @@ vim.opt.smartindent = true
 
 -- For WSL
 if vim.fn.exists('g:vscode') == 0 then
-  if vim.fn.has('wsl') == 1 then
+  -- if vim.fn.has('wsl') == 1 then
+  --   vim.g.clipboard = {
+  --     name = 'WslClipboard',
+  --     copy = {
+  --       ['+'] = 'clip.exe',
+  --       ['*'] = 'clip.exe',
+  --     },
+  --     paste = {
+  --       ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+  --       ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+  --     },
+  --     cache_enabled = 0,
+  --   }
+  -- else
     vim.g.clipboard = {
-      name = 'WslClipboard',
+      name = 'OSC 52',
       copy = {
-        ['+'] = 'clip.exe',
-        ['*'] = 'clip.exe',
+        ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
       },
       paste = {
-        ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-        ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
       },
-      cache_enabled = 0,
     }
-  end
+  -- end 
 end
 
 -- [[ Highlight on yank ]]
