@@ -63,7 +63,7 @@ vim.opt.smartindent = true
 
 
 -- For WSL
-if vim.fn.exists('g:vscode') == 0 then
+if vim.fn.exists('g:vscode') == 0 and not vim.fn.has('macunix') then
   -- if vim.fn.has('wsl') == 1 then
   --   vim.g.clipboard = {
   --     name = 'WslClipboard',
