@@ -26,6 +26,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set("n", '<leader>ih', function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
     end, { desc = "toggle Inlay Hint", buffer = event.buf })
+
+    -- for handling rust_analyzer
+    for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
+      local default_diagnostic_handler = vim.lsp.handlers[method]
+      vim.lsp.handlers[method] = function(err, result, context, config)
+        if err ~= nil and err.code == -32802 then
+          return
+        end
+        return default_diagnostic_handler(err, result, context, config)
+      end
+    end
   end
 })
 
@@ -81,9 +92,8 @@ return {
           end),
           ['<C-k>'] = cmp.mapping.scroll_docs(-4),
           ['<C-j>'] = cmp.mapping.scroll_docs(4),
-          -- luasnip
-          -- ['<C-l>'] = cmp_action.luasnip_jump_forward(),
-          -- ['<C-h>'] = cmp_action.luasnip_jump_backward(),
+          ['<C-l>'] = vim.snippet.jump(1),
+          ['<C-h>'] = vim.snippet.jump(-1),
         }),
       })
     end
