@@ -9,8 +9,9 @@ vim.diagnostic.config({
   },
 })
 vim.opt.signcolumn = 'yes'
+vim.lsp.inlay_hint.enable(true)
 vim.api.nvim_create_autocmd('LspAttach', {
-  desc = 'Lsp Actions',
+  desc = 'LspAttach',
   callback = function(event)
     vim.keymap.set("n", '<leader>rn', vim.lsp.buf.rename, { desc = "[R]e[N]ame", buffer = event.buf })
     vim.keymap.set("n", '<leader>ca', vim.lsp.buf.code_action, { desc = "[C]ode [A]ctions", buffer = event.buf })
@@ -22,6 +23,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
       { desc = "[G]oto [I]mplementation", buffer = event.buf })
     vim.keymap.set("n", "<leader>td", vim.lsp.buf.type_definition, { desc = "[T]ype [D]efinition", buffer = event.buf })
     vim.keymap.set("n", '<leader>fc', vim.lsp.buf.format, { desc = "[F]ormat [C]ode", buffer = event.buf })
+    vim.keymap.set("n", '<leader>ih', function ()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end, { desc = "toggle Inlay Hint", buffer = event.buf })
   end
 })
 
@@ -41,6 +45,7 @@ return {
         lspconfig_defaults.capabilities,
         require('cmp_nvim_lsp').default_capabilities()
       )
+      require('lspconfig').rust_analyzer.setup({})
     end
   },
   {
@@ -83,8 +88,13 @@ return {
       })
     end
   },
-  { 'hrsh7th/cmp-nvim-lsp',    opts = {} },
-  { 'williamboman/mason.nvim', opts = {} },
+  { 'hrsh7th/cmp-nvim-lsp', opts = {} },
+  {
+    'williamboman/mason.nvim',
+    opts = {
+      PATH = "append"
+    }
+  },
   {
     'williamboman/mason-lspconfig.nvim',
     dependencies = {
@@ -92,7 +102,7 @@ return {
     },
     config = function(_)
       require("mason-lspconfig").setup({
-        ensure_installed = { 'rust_analyzer' },
+        ensure_installed = { 'pyright' },
         automatic_installation = false,
         handlers = {
           -- default handlers
@@ -100,17 +110,12 @@ return {
             require('lspconfig')[server_name].setup({})
           end,
           -- custom handlers
-          ["rust_analyzer"] = function()
-            require('lspconfig').rust_analyzer.setup({
-
-            })
-          end,
         }
       })
     end
   },
 
-  { "j-hui/fidget.nvim", opts = {}, }, -- shows lsp status in right bottom
+  { "j-hui/fidget.nvim",    opts = {}, }, -- shows lsp status in right bottom
 
 
   -- FOR config editing
