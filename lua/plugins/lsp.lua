@@ -23,7 +23,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       { desc = "[G]oto [I]mplementation", buffer = event.buf })
     vim.keymap.set("n", "<leader>td", vim.lsp.buf.type_definition, { desc = "[T]ype [D]efinition", buffer = event.buf })
     vim.keymap.set("n", '<leader>fc', vim.lsp.buf.format, { desc = "[F]ormat [C]ode", buffer = event.buf })
-    vim.keymap.set("n", '<leader>ih', function ()
+    vim.keymap.set("n", '<leader>ih', function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
     end, { desc = "toggle Inlay Hint", buffer = event.buf })
   end
@@ -127,6 +127,18 @@ return {
         -- See the configuration section for more details
         -- Load luvit types when the `vim.uv` word is found
         { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+  {
+    "chrisgrieser/nvim-lsp-endhints",
+    event = "LspAttach",
+    opts = {
+      icons = {
+        type = "ϸ ",
+        parameter = "ϕ ",
+        offspec = "Π ", -- hint kind not defined in official LSP spec
+        unknown = "ξ ", -- hint kind is nil
       },
     },
   },
