@@ -56,7 +56,15 @@ return {
         lspconfig_defaults.capabilities,
         require('cmp_nvim_lsp').default_capabilities()
       )
-      require('lspconfig').rust_analyzer.setup({})
+      require('lspconfig').rust_analyzer.setup({
+        procMacro = {
+          ignored = {
+            leptos_macro = {
+              "server",
+            },
+          },
+        },
+      })
     end
   },
   {
@@ -92,10 +100,20 @@ return {
           end),
           ['<C-k>'] = cmp.mapping.scroll_docs(-4),
           ['<C-j>'] = cmp.mapping.scroll_docs(4),
-          ['<C-l>'] = vim.snippet.jump(1),
-          ['<C-h>'] = vim.snippet.jump(-1),
         }),
       })
+      vim.keymap.set({ "i", "s" }, "<C-l>", function()
+        if vim.snippet.active({ direction = 1 }) then
+          return '<cmd>lua vim.snippet.jump(1)<cr>'
+        else
+          return '<C-l>'
+        end
+      end, { expr = true, silent = true });
+      vim.keymap.set({ "i", "s" }, "<C-h>", function()
+        if vim.snippet.active({ direction = -1 }) then
+          return '<cmd>lua vim.snippet.jump(-1)<cr>'
+        end
+      end, { expr = true, silent = true });
     end
   },
   { 'hrsh7th/cmp-nvim-lsp', opts = {} },

@@ -1,4 +1,3 @@
-
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -10,7 +9,7 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- Git related
-vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = 'Git Status'})
+vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = 'Git Status' })
 
 
 -- Taken from theprimagen
@@ -31,11 +30,14 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
 -- Yank to system clipboard
-vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
-vim.keymap.set({"n", "v"}, "<leader>p", [["+p]])
+vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]])
 vim.keymap.set("n", "<leader>P", [["+P]])
 
 -- Sometimes c-c can be different to ESC
-vim.keymap.set("i", "<C-c>", "<Esc><cmd>update<cr>")
+vim.keymap.set({ "i", "s" }, "<C-c>", function()
+  vim.snippet.stop()
+  return "<Esc><cmd>update<cr>"
+end, { expr = true, silent = true })
