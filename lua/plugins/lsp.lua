@@ -130,7 +130,7 @@ return {
     },
     config = function(_)
       require("mason-lspconfig").setup({
-        ensure_installed = { 'pyright' },
+        ensure_installed = { 'basedpyright', 'ruff' },
         automatic_installation = false,
         handlers = {
           -- default handlers
@@ -138,6 +138,34 @@ return {
             require('lspconfig')[server_name].setup({})
           end,
           -- custom handlers
+          ["basedpyright"] = function()
+            require('lspconfig').basedpyright.setup({
+              settings = {
+                basedpyright = {
+                  analysis = {
+                    autoSearchPaths = true,
+                    diagnosticMode = "workspace",
+                    useLibraryCodeForTypes = true,
+                    typeCheckingMode = "basic", -- options: off, basic, standard, strict
+                  },
+                },
+              },
+              -- This helps nvim find the root 'base' folder where uv.lock is
+              root_dir = require('lspconfig').util.root_pattern("uv.lock", "pyproject.toml", ".git"),
+            })
+          end,
+
+          -- Ruff specific config
+          ["ruff"] = function()
+            require('lspconfig').ruff.setup({
+              -- Tells Ruff to use the pyproject.toml in your root
+              root_dir = require('lspconfig').util.root_pattern("pyproject.toml", "uv.lock"),
+              on_attach = function(client, _)
+                -- Disable hover in Ruff to let Basedpyright handle it
+                client.server_capabilities.hoverProvider = false
+              end,
+            })
+          end,
         }
       })
     end
