@@ -1,4 +1,12 @@
 local telescope_init = function()
+  require('telescope').setup({
+    defaults = {
+      preview = {
+        treesitter = false,
+      },
+    },
+  })
+
   pcall(require('telescope').load_extension, 'fzf')
 end
 

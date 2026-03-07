@@ -1,5 +1,13 @@
 local function treesitter_init()
-  require('nvim-treesitter.configs').setup({
+  local ok, ts_configs = pcall(require, 'nvim-treesitter.configs')
+  if not ok then
+    vim.schedule(function()
+      vim.notify('nvim-treesitter is not available yet. Run :Lazy sync', vim.log.levels.WARN)
+    end)
+    return
+  end
+
+  ts_configs.setup({
     ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
     auto_install = true,
     highlight = { enable = true },
