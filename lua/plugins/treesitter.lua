@@ -1,13 +1,7 @@
-local treesitter_init = function(_, opts)
-  -- [[ Configure Treesitter ]]
-  -- See `:help nvim-treesitter`
-  require('nvim-treesitter.configs').setup {
-    -- Add languages to be installed here that you want installed for treesitter
+local function treesitter_init()
+  require('nvim-treesitter.configs').setup({
     ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
-
-    -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = true,
-
     highlight = { enable = true },
     indent = { enable = true },
     incremental_selection = {
@@ -22,9 +16,8 @@ local treesitter_init = function(_, opts)
     textobjects = {
       select = {
         enable = true,
-        lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+        lookahead = true,
         keymaps = {
-          -- You can use the capture groups defined in textobjects.scm
           ['aa'] = '@parameter.outer',
           ['ia'] = '@parameter.inner',
           ['af'] = '@function.outer',
@@ -35,7 +28,7 @@ local treesitter_init = function(_, opts)
       },
       move = {
         enable = true,
-        set_jumps = true, -- whether to set jumps in the jumplist
+        set_jumps = true,
         goto_next_start = {
           [']m'] = '@function.outer',
           [']]'] = '@class.outer',
@@ -63,19 +56,17 @@ local treesitter_init = function(_, opts)
         },
       },
     },
-  }
-
+  })
 end
 
-
-local M = {
-  -- Highlight, edit, and navigate code
-  'nvim-treesitter/nvim-treesitter',
-  dependencies = {
-    'nvim-treesitter/nvim-treesitter-textobjects',
+return {
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    event = { 'BufReadPost', 'BufNewFile' },
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
+    config = treesitter_init,
   },
-  build = ':TSUpdate',
-  config = treesitter_init
 }
-
-return M
