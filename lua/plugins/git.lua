@@ -1,13 +1,16 @@
 return {
   {
+    -- Git commands inside Neovim (:Git, :Gdiff, etc).
     'tpope/vim-fugitive',
     cmd = { 'Git', 'G' },
   },
   {
+    -- GitHub helpers for fugitive (:GBrowse).
     'tpope/vim-rhubarb',
     cmd = { 'GBrowse' },
   },
   {
+    -- Git hunk signs and hunk actions.
     'lewis6991/gitsigns.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {

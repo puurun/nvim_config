@@ -1,10 +1,12 @@
 return {
   {
+    -- Popup that shows available keybindings by prefix.
     'folke/which-key.nvim',
     event = 'VeryLazy',
     opts = {},
   },
   {
+    -- Statusline.
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
     opts = {
@@ -17,6 +19,7 @@ return {
     },
   },
   {
+    -- Indentation guides.
     'lukas-reineke/indent-blankline.nvim',
     main = 'ibl',
     event = { 'BufReadPost', 'BufNewFile' },

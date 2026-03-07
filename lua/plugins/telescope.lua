@@ -3,7 +3,7 @@ local telescope_init = function()
 end
 
 local M = {
-  -- Fuzzy Finder (files, lsp, etc)
+  -- Fuzzy finder for files, grep, buffers, and diagnostics.
   'nvim-telescope/telescope.nvim',
   branch = '0.1.x',
   cmd = 'Telescope',
@@ -28,14 +28,11 @@ local M = {
     { '<leader>sd', function() require('telescope.builtin').diagnostics() end, desc = '[S]earch [D]iagnostics' },
   },
   dependencies = {
+    -- Shared Lua utility functions.
     'nvim-lua/plenary.nvim',
-    -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-    -- Only load if `make` is available. Make sure you have the system
-    -- requirements installed.
+    -- Native fzf sorter for better telescope performance.
     {
       'nvim-telescope/telescope-fzf-native.nvim',
-      -- NOTE: If you are having trouble with this installation,
-      --       refer to the README for telescope-fzf-native for more instructions.
       build = 'make',
       cond = function()
         return vim.fn.executable 'make' == 1

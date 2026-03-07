@@ -1,5 +1,5 @@
 local M = {
-  -- A Tree that shows undos
+  -- Visual undo history tree.
   'mbbill/undotree',
   cmd = 'UndotreeToggle',
   keys = {

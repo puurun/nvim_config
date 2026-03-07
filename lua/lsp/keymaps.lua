@@ -19,7 +19,14 @@ function M.on_attach(event)
   vim.keymap.set('n', '<leader>lD', vim.lsp.buf.declaration, { desc = '[L]SP [D]eclaration', buffer = bufnr })
   vim.keymap.set('n', '<leader>li', vim.lsp.buf.implementation, { desc = '[L]SP [I]mplementation', buffer = bufnr })
   vim.keymap.set('n', '<leader>lt', vim.lsp.buf.type_definition, { desc = '[L]SP [T]ype definition', buffer = bufnr })
-  vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format, { desc = '[L]SP [F]ormat', buffer = bufnr })
+  vim.keymap.set('n', '<leader>lf', function()
+    local ok, conform = pcall(require, 'conform')
+    if ok then
+      conform.format({ bufnr = bufnr, lsp_format = 'fallback' })
+      return
+    end
+    vim.lsp.buf.format({ bufnr = bufnr })
+  end, { desc = '[L]SP [F]ormat', buffer = bufnr })
   vim.keymap.set('n', '<leader>lh', function()
     toggle_inlay_hint(bufnr)
   end, { desc = '[L]SP toggle inlay [H]int', buffer = bufnr })

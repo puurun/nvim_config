@@ -1,47 +1,24 @@
 return {
   {
+    -- Base LSP client configuration.
     'neovim/nvim-lspconfig',
-    dependencies = {
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-      'hrsh7th/nvim-cmp',
-      'hrsh7th/cmp-nvim-lsp',
-    },
     init = function()
       require('lsp.diagnostics').setup()
       require('lsp.keymaps').setup()
       require('lsp.rust_workaround').setup()
     end,
     config = function()
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
       require('lsp.servers').setup(capabilities)
     end,
   },
   {
-    'hrsh7th/nvim-cmp',
-    config = function()
-      require('lsp.cmp').setup()
-    end,
-  },
-  { 'hrsh7th/cmp-nvim-lsp', opts = {} },
-  {
-    'williamboman/mason.nvim',
-    opts = {
-      PATH = 'append',
-    },
+    -- LSP progress notifications UI.
+    'j-hui/fidget.nvim',
+    opts = {},
   },
   {
-    'williamboman/mason-lspconfig.nvim',
-    dependencies = {
-      'williamboman/mason.nvim',
-    },
-    opts = {
-      ensure_installed = { 'basedpyright', 'ruff' },
-      automatic_installation = false,
-    },
-  },
-  { 'j-hui/fidget.nvim', opts = {} },
-  {
+    -- Better Lua development experience for Neovim config.
     'folke/lazydev.nvim',
     ft = 'lua',
     opts = {
@@ -51,6 +28,7 @@ return {
     },
   },
   {
+    -- End-of-line LSP hints display.
     'chrisgrieser/nvim-lsp-endhints',
     event = 'LspAttach',
     opts = {

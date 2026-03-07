@@ -61,10 +61,12 @@ end
 
 return {
   {
+    -- Syntax highlighting, textobjects, and AST-based motions.
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     event = { 'BufReadPost', 'BufNewFile' },
     dependencies = {
+      -- Extra textobject queries and motions.
       'nvim-treesitter/nvim-treesitter-textobjects',
     },
     config = treesitter_init,
