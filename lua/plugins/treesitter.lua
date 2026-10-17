@@ -1,69 +1,37 @@
+local languages = {
+  'c',
+  'cpp',
+  'css',
+  'go',
+  'html',
+  'javascript',
+  'lua',
+  'python',
+  'rust',
+  'svelte',
+  'tsx',
+  'typescript',
+  'vim',
+  'vimdoc',
+}
+
 local function treesitter_init()
-  local ok, ts_configs = pcall(require, 'nvim-treesitter.configs')
+  local ok, ts = pcall(require, 'nvim-treesitter')
   if not ok then
     vim.schedule(function()
-      vim.notify('nvim-treesitter is not available yet. Run :Lazy sync', vim.log.levels.WARN)
+      vim.notify('nvim-treesitter is unavailable. Check plugin install/version.', vim.log.levels.WARN)
     end)
     return
   end
 
-  ts_configs.setup({
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
-    auto_install = true,
-    highlight = { enable = true },
-    indent = { enable = true },
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = '<c-space>',
-        node_incremental = '<c-space>',
-        scope_incremental = '<c-s>',
-        node_decremental = '<c-backspace>',
-      },
-    },
-    textobjects = {
-      select = {
-        enable = true,
-        lookahead = true,
-        keymaps = {
-          ['aa'] = '@parameter.outer',
-          ['ia'] = '@parameter.inner',
-          ['af'] = '@function.outer',
-          ['if'] = '@function.inner',
-          ['ac'] = '@class.outer',
-          ['ic'] = '@class.inner',
-        },
-      },
-      move = {
-        enable = true,
-        set_jumps = true,
-        goto_next_start = {
-          [']m'] = '@function.outer',
-          [']]'] = '@class.outer',
-        },
-        goto_next_end = {
-          [']M'] = '@function.outer',
-          [']['] = '@class.outer',
-        },
-        goto_previous_start = {
-          ['[m'] = '@function.outer',
-          ['[['] = '@class.outer',
-        },
-        goto_previous_end = {
-          ['[M'] = '@function.outer',
-          ['[]'] = '@class.outer',
-        },
-      },
-      swap = {
-        enable = true,
-        swap_next = {
-          ['<leader>a'] = '@parameter.inner',
-        },
-        swap_previous = {
-          ['<leader>A'] = '@parameter.inner',
-        },
-      },
-    },
+  -- Core highlighting is provided by Neovim; start it on matching filetypes.
+  local group = vim.api.nvim_create_augroup('UserTreesitterStart', { clear = true })
+  vim.api.nvim_create_autocmd('FileType', {
+    group = group,
+    pattern = languages,
+    callback = function(event)
+      pcall(vim.treesitter.start, event.buf)
+    end,
   })
 end
 
@@ -71,8 +39,12 @@ return {
   {
     -- Syntax highlighting, textobjects, and AST-based motions.
     'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    event = { 'BufReadPost', 'BufNewFile' },
+    build = function()
+      local ok, ts = pcall(require, 'nvim-treesitter')
+      if ok then
+        ts.update(languages, { summary = true })
+      end
+    end,
     dependencies = {
       -- Extra textobject queries and motions.
       'nvim-treesitter/nvim-treesitter-textobjects',

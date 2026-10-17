@@ -6,13 +6,23 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = 'Down (display line aware)' })
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.jump({ count = -1 })
+end, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.jump({ count = 1 })
+end, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, { desc = '[D]iagnostic [L]ist' })
 
 -- Git related
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = 'Git Status' })
+
+-- Quickfix
+vim.keymap.set('n', '<leader>qo', vim.cmd.copen, { desc = '[Q]uickfix [O]pen' })
+vim.keymap.set('n', '<leader>ql', vim.cmd.cclose, { desc = '[Q]uickfix c[L]ose' })
+vim.keymap.set('n', '<leader>qn', vim.cmd.cnext, { desc = '[Q]uickfix [N]ext' })
+vim.keymap.set('n', '<leader>qp', vim.cmd.cprev, { desc = '[Q]uickfix [P]revious' })
 
 -- Taken from theprimagen
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selected lines down' })
@@ -42,3 +52,13 @@ vim.keymap.set({ 'i', 's' }, '<C-c>', function()
   vim.snippet.stop()
   return '<Esc><cmd>update<cr>'
 end, { expr = true, silent = true, desc = 'Leave insert/select and save buffer' })
+
+
+-- Global format keymap (Works on every file, using Conform)
+vim.keymap.set({ 'n', 'v' }, '<leader>fc', function()
+  require('conform').format({
+    lsp_fallback = true,
+    async = false,
+    timeout_ms = 500,
+  })
+end, { desc = '[F]ormat [C]ode' })

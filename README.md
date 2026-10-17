@@ -7,7 +7,7 @@
 ## LSP 추가 방법
 
 1. LSP 서버 실행 파일을 시스템에 직접 설치합니다.
-- 예: `rust-analyzer`, `basedpyright-langserver`, `ruff`, `typescript-language-server`, `svelteserver`, `yaml-language-server`, `taplo`
+- 예: `rust-analyzer`, `basedpyright-langserver`, `ruff`, `typescript-language-server`, `svelteserver`, `yaml-language-server`, `taplo`, `tailwindcss-language-server`
 
 2. `lua/lsp/servers/`에 서버 파일을 추가하고, `lua/lsp/servers/init.lua`의 `server_modules`에 등록합니다.
 
@@ -16,7 +16,10 @@
 ```lua
 function M.setup(capabilities, utils)
   vim.lsp.config('lua_ls', utils.with_capabilities(capabilities, {
-    root_dir = utils.root_from({ '.luarc.json', '.git' }),
+    root_markers = {
+      { '.luarc.json' },
+      { '.git' },
+    },
     settings = {
       Lua = {
         diagnostics = { globals = { 'vim' } },
@@ -27,7 +30,7 @@ function M.setup(capabilities, utils)
 end
 ```
 
-3. 필요하면 각 서버 파일의 `utils.root_from({...})` 마커를 프로젝트에 맞게 조정합니다.
+3. 필요하면 각 서버 파일의 `root_markers`를 프로젝트에 맞게 조정합니다.
 
 현재 기본 등록 서버:
 - `rust_analyzer`
@@ -37,6 +40,7 @@ end
 - `svelte`
 - `yamlls`
 - `taplo`
+- `tailwindcss`
 
 ## Formatter 추가 방법 (conform.nvim)
 
@@ -72,7 +76,7 @@ formatters_by_ft = {
 
 - LSP가 안 붙으면:
   - 서버 바이너리 설치 여부 확인
-  - `root_dir` 마커가 현재 프로젝트와 맞는지 확인
+  - `root_markers`가 현재 프로젝트와 맞는지 확인
 - 포맷이 안 되면:
   - formatter CLI 설치 여부 확인
   - filetype 이름과 `formatters_by_ft` 키가 일치하는지 확인

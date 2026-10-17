@@ -11,25 +11,18 @@ end
 function M.on_attach(event)
   local bufnr = event.buf
 
-  vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, { desc = '[L]SP [R]ename', buffer = bufnr })
-  vim.keymap.set('n', '<leader>la', vim.lsp.buf.code_action, { desc = '[L]SP code [A]ction', buffer = bufnr })
-  vim.keymap.set('n', '<leader>ls', vim.lsp.buf.signature_help, { desc = '[L]SP [S]ignature help', buffer = bufnr })
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = '[R]e[N]ame', buffer = bufnr })
+  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = '[C]ode [A]ctions', buffer = bufnr })
+  vim.keymap.set('n', '<leader>K', vim.lsp.buf.signature_help, { desc = 'Signature help', buffer = bufnr })
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'LSP hover', buffer = bufnr })
-  vim.keymap.set('n', '<leader>ld', vim.lsp.buf.definition, { desc = '[L]SP [D]efinition', buffer = bufnr })
-  vim.keymap.set('n', '<leader>lD', vim.lsp.buf.declaration, { desc = '[L]SP [D]eclaration', buffer = bufnr })
-  vim.keymap.set('n', '<leader>li', vim.lsp.buf.implementation, { desc = '[L]SP [I]mplementation', buffer = bufnr })
-  vim.keymap.set('n', '<leader>lt', vim.lsp.buf.type_definition, { desc = '[L]SP [T]ype definition', buffer = bufnr })
-  vim.keymap.set('n', '<leader>lf', function()
-    local ok, conform = pcall(require, 'conform')
-    if ok then
-      conform.format({ bufnr = bufnr, lsp_format = 'fallback' })
-      return
-    end
-    vim.lsp.buf.format({ bufnr = bufnr })
-  end, { desc = '[L]SP [F]ormat', buffer = bufnr })
-  vim.keymap.set('n', '<leader>lh', function()
+  vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, { desc = '[G]oto [D]efinition', buffer = bufnr })
+  vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, { desc = '[G]oto [D]eclaration', buffer = bufnr })
+  vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, { desc = '[G]oto [R]eferences', buffer = bufnr })
+  vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, { desc = '[G]oto [I]mplementation', buffer = bufnr })
+  vim.keymap.set('n', '<leader>td', vim.lsp.buf.type_definition, { desc = '[T]ype [D]efinition', buffer = bufnr })
+  vim.keymap.set('n', '<leader>ih', function()
     toggle_inlay_hint(bufnr)
-  end, { desc = '[L]SP toggle inlay [H]int', buffer = bufnr })
+  end, { desc = 'Toggle inlay hint', buffer = bufnr })
 
   pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
 end

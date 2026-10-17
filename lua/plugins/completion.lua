@@ -9,7 +9,18 @@ return {
     },
     opts = {
       keymap = {
-        preset = 'default',
+        preset = 'super-tab',
+        ['<Tab>'] = {
+          function(cmp)
+            if cmp.snippet_active() then
+              return cmp.accept()
+            end
+            return cmp.select_and_accept()
+          end,
+          'fallback',
+        },
+        ['<C-l>'] = { 'snippet_forward', 'fallback' },
+        ['<C-h>'] = { 'snippet_backward', 'fallback' },
       },
       completion = {
         documentation = {

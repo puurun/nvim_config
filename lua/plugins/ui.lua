@@ -3,7 +3,9 @@ return {
     -- Popup that shows available keybindings by prefix.
     'folke/which-key.nvim',
     event = 'VeryLazy',
-    opts = {},
+    opts = {
+      delay = 800,
+    },
   },
   {
     -- Statusline.
@@ -25,6 +27,9 @@ return {
     event = { 'BufReadPost', 'BufNewFile' },
     opts = {
       indent = { char = '┊' },
+      scope = {
+        enabled = false,
+      },
     },
   },
 }

@@ -4,8 +4,11 @@ local server_modules = {
   'lsp.servers.rust_analyzer',
   'lsp.servers.basedpyright',
   'lsp.servers.ruff',
-  'lsp.servers.ts_ls',
+  'lsp.servers.vtsls',
+  'lsp.servers.eslint',
+  'lsp.servers.emmet_language_server',
   'lsp.servers.svelte',
+  'lsp.servers.tailwindcss',
   'lsp.servers.yamlls',
   'lsp.servers.taplo',
 }

@@ -27,7 +27,7 @@ vim.o.signcolumn = 'yes'
 
 -- Decrease update time
 vim.o.updatetime = 50
-vim.o.timeoutlen = 300
+vim.o.timeoutlen = 500
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -41,7 +41,7 @@ vim.opt.scrolloff = 8
 vim.opt.wrap = false
 
 -- Set ruler column
-vim.opt.colorcolumn = '100'
+vim.opt.colorcolumn = '120'
 
 -- Indenting
 vim.opt.tabstop = 4
@@ -63,3 +63,5 @@ if vim.fn.exists('g:vscode') == 0 and not vim.fn.has('macunix') then
     },
   }
 end
+vim.g.omni_sql_no_default_maps = 1
+vim.g.ftplugin_sql_omni_key = '<leader>sql'

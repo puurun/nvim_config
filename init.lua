@@ -1,4 +1,6 @@
 require('core.options')
 require('core.autocmds')
-require('core.keymaps')
+if not vim.g.vscode then
+  require('core.keymaps')
+end
 require('lazy_setup')
